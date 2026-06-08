@@ -1,0 +1,34 @@
+name: Smoke test TUF repository
+description: Run TUF client smoke tests against a repository URL. Requires the repository to be checked out first.
+
+inputs:
+  metadata_url:
+    description: "URL of the TUF repository to test"
+    required: true
+  update_base_url:
+    description: "Optional metadata URL to use as previous repository state"
+    required: false
+    default: ''
+  valid_days:
+    description: "Required days of validity (0 to skip check)"
+    required: false
+    default: '0'
+  offline_valid_days:
+    description: "Required days of offline validity (0 to skip check)"
+    required: false
+    default: '0'
+
+runs:
+  using: composite
+  steps:
+    - name: Set initial root for the smoke test
+      shell: bash
+      run: cp metadata/root_history/5.root.json ./root.json
+
+    - name: Smoke test repository with a TUF client
+      uses: theupdateframework/tuf-on-ci/actions/test-repository@daa76c3dbf011b70f9fb01dbb989a27bbd2bd20d # v0.19.0
+      with:
+        metadata_url: ${{ inputs.metadata_url }}
+        update_base_url: ${{ inputs.update_base_url }}
+        valid_days: ${{ inputs.valid_days }}
+        offline_valid_days: ${{ inputs.offline_valid_days }}
