@@ -7,3 +7,4 @@ test-root-attestation.ca
 gha-creds-*.json
 .tuf-on-ci-sign.ini
 *~
+__pycache__/
