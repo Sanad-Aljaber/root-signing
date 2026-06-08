@@ -1,0 +1,23 @@
+name: Update issue
+
+on:
+  workflow_call:
+    inputs:
+      success:
+        description: "Whether the calling workflow succeeded"
+        required: true
+        type: string
+
+permissions: {}
+
+jobs:
+  update-issue:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: 'write' # for modifying Issues
+    steps:
+      - name: Update the issue for the workflow
+        uses: theupdateframework/tuf-on-ci/actions/update-issue@daa76c3dbf011b70f9fb01dbb989a27bbd2bd20d # v0.19.0
+        with:
+          token: ${{ secrets.TUF_ON_CI_TOKEN || secrets.GITHUB_TOKEN }}
+          success: ${{ inputs.success }}
