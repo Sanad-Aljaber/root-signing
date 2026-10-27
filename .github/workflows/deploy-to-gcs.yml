@@ -25,7 +25,8 @@ jobs:
 
       - name: Prepare data for upload
         run: |
-          # Extract the github-pages arcive into ./repository/
+          set -euo pipefail
+          # Extract the github-pages archive into ./repository/
           mkdir repository
           tar --directory repository -xvf artifact.tar
 
@@ -41,8 +42,8 @@ jobs:
 
       - name: Upload repository to GCS
         run: |
+          set -euo pipefail
           BUCKET="gs://sigstore-tuf-root/"
-          LOAD_BALANCER="tuf-repo-cdn-lb"
 
           # Upload metadata, make sure we upload timestamp last
           gcloud storage rsync --cache-control=no-store --recursive --exclude=timestamp.json \
